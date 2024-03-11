@@ -1,0 +1,35 @@
+.root-page {
+    font-family: "思源宋体";
+}
+.top-page {
+    background-color: #ADD5A2;
+}
+.custom-navbar-bg {
+    background-color: #ADD5A2;
+}
+.header-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 100%;
+}
+#carouselExampleCaptions {
+    display: flex;
+    justify-content: center;
+}
+.carousel-inner {
+    width: 100%;
+    max-width: 1024px;
+    margin: auto;
+    padding-bottom: 5vh;
+}
+.carousel-item img {
+    width: 100%;
+    height: auto;
+    opacity: 0.8;
+    border-radius: 25px;
+    border: 2px solid #8AC007;
+}
+.bottom-page h1, h2, h3, h4, h5{
+    text-align: center;
+}

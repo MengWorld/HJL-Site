@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>深海自留地 | 留言墙</title>
+    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" rel="stylesheet">
+    <link href="css/sea.css" rel="stylesheet" type="text/css">
+    <link href="favicon.ico" rel="icon">
+    <script crossOrigin="anonymous"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+    </script>
+</head>
+<body>
+<div class="root-page">
+    <div class="container-fluid">
+        <div class="container my-4">
+            <!--登录和注册的模态对话框-->
+            <div aria-hidden="true" aria-labelledby="loginModalLabel" class="modal fade" id="loginModal" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="loginModalLabel">登录</h1>
+                            <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="loginForm">
+                                <div class="form-floating mb-3">
+                                    <input class="form-control" id="login-email" placeholder="name@example.com"
+                                           type="email">
+                                    <label for="login-email">邮箱</label>
+                                </div>
+                                <div class="form-floating">
+                                    <input class="form-control" id="login-password" placeholder="Password"
+                                           type="password">
+                                    <label for="login-password">密码</label>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">关闭</button>
+                            <button class="btn btn-success" id="login-button" type="button" onclick="login()">登录</button>
+                        </div>
+                        <label class="my-3" style="text-align: center">还没有账号？<a data-bs-target="#registerModal"
+                                                                                     data-bs-toggle="modal"
+                                                                                     href="">注册一个</a>。</label>
+                    </div>
+                </div>
+            </div>
+
+            <div aria-hidden="true" aria-labelledby="registerModalLabel" class="modal fade" id="registerModal"
+                 tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="registerModalLabel">注册</h1>
+                            <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="registerForm">
+                                <div class="form-floating mb-3">
+                                    <input class="form-control" id="register-email" placeholder="name@example.com"
+                                           type="email">
+                                    <label for="register-email">邮箱</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input class="form-control" id="register-username" placeholder="Username"
+                                           type="text">
+                                    <label for="register-username">用户名</label>
+                                </div>
+                                <div class="form-floating">
+                                    <input class="form-control" id="register-password" placeholder="Password"
+                                           type="password">
+                                    <label for="register-password">密码</label>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">关闭</button>
+                            <button class="btn btn-success" id="register-button" type="button" onclick="register()">注册</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <label>您好:
+                <b id="user-email">
+                    请<a href="" data-bs-toggle="modal" data-bs-target="#loginModal" id="loginLink">登录</a>
+                </b>
+                <span>|</span>
+                <a href="index.html">返回首页</a>
+            </label>
+            <div class="alert alert-success my-4" role="alert">
+                <h4 class="alert-heading">欢迎来到深海自留地!</h4>
+                <p class="mb-0">在这里写下想对雨木木说的话吧~</p>
+            </div>
+            <div class="my-4">
+                <label class="form-label" for="exampleFormControlTextarea1">留言</label>
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            </div>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end my-4">
+                <button class="btn btn-outline-success" type="submit">提交</button>
+            </div>
+            <hr>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        let token = localStorage.getItem('token')
+        let email = localStorage.getItem('email')
+        if (token) {
+            console.log('已登录')
+            document.querySelector('#user-email').innerHTML = `<span><b>${email}</b> | <a href="" id="logoutLink" onclick="logout()">退出</a></span>`
+        } else {
+            console.log('未登录')
+        }
+    })
+    function register() {
+        let email = document.getElementById('register-email')
+        let username = document.getElementById('register-username')
+        let password = document.getElementById('register-password')
+
+        fetch('/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({email: email.value, username: username.value, password: password.value})
+        })
+            .then(response => {
+                if(response.status === 200) return response.json()
+                else throw new Error('注册失败，请检查您的邮箱和密码是否正确。')
+            })
+            .then(data => {
+                let registerModal = document.getElementById('registerModal')
+                registerModal.hidden = true
+            })
+            .catch(error => {
+                console.error('注册失败:', error)
+            })
+    }
+
+    function login() {
+        let email = document.getElementById('login-email')
+        let password = document.getElementById('login-password')
+
+        fetch('/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({email: email.value, password: password.value})
+        })
+            .then(response => {
+                if(response.status === 200) return response.json()
+                else throw new Error('登录失败，请检查您的邮箱和密码是否正确。')
+            })
+            .then(data => {
+                localStorage.setItem('token', data.token)
+                localStorage.setItem('email', data.email)
+                document.querySelector('#user-email').innerHTML = `<span><b>${email.value}</b> | <a href="" id="logoutLink" onclick="logout()">退出</a></span>`
+                let loginModal = document.getElementById('loginModal')
+                loginModal.hidden = true
+            })
+            .catch(error => {
+                console.error('登录失败:', error)
+            })
+    }
+
+    function logout() {
+        localStorage.removeItem('token')
+        localStorage.removeItem('email')
+        document.querySelector('#user-email').innerHTML = `<b>请<a data-bs-target="#loginModal" data-bs-toggle="modal" href="" id="loginLink">登录</a></b>`
+        let loginModal = document.getElementById('loginModal')
+        document.getElementById('login-email').value = ''
+        document.getElementById('login-password').value = ''
+        loginModal.hidden = false
+    }
+
+</script>
