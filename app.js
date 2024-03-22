@@ -33,10 +33,9 @@ app.post('/register', async (req, res) => {
     const {email, username, password} = req.body
     const hashedPassword = await bcrypt.hash(password, 10)
 
-    // 将用户信息保存到数据库
     const result = await db.createUser({email, username, password: hashedPassword})
     res.status(200).send(result)
-    console.log("注册成功~")
+    console.log("注册成功")
 })
 
 app.post('/login', async (req, res) => {
@@ -46,8 +45,8 @@ app.post('/login', async (req, res) => {
     if (user && await bcrypt.compare(password, user.password)) {
         req.session.email = user.email
         req.session.username = user.username
-        console.log(`${user.username}登录成功~`)
-        res.status(200).send({message: `${user.username}登录成功~`})
+        console.log(`${user.username}登录成功`)
+        res.status(200).send({message: `${user.username}登录成功`})
     } else {
         res.status(401).send({error: "Email or password is incorrect"})
     }
@@ -58,10 +57,24 @@ app.get('/logout', (req, res) => {
     res.send({ message: '已成功注销' });
 });
 
+// 留言板帖子的CRUD路由
 
-// 这里添加留言板帖子的CRUD路由
+app.get('/get-posts', async (req, res) => {
+    const posts = await db.getPosts()
+    res.status(200).send(posts)
+})
 
+app.post('/submit', async (req, res) => {
+    const {email, message} = req.body;
+    try {
+        const result = await db.createPost({user_email: email, content: message});
+        res.status(200).send(result);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error creating post');
+    }
+})
 
-app.use((req, res, next) => {
+app.use((req, res) => {
     res.status(404).send("Sorry can't find that!")
 })

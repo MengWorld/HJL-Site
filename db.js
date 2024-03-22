@@ -19,10 +19,10 @@ const initDb = () => {
 
     db.run(`CREATE TABLE IF NOT EXISTS posts (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER NOT NULL,
+    user_email TEXT NOT NULL,
     content TEXT NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id)
+    FOREIGN KEY (user_email) REFERENCES users(email)
   )`);
 };
 
@@ -69,7 +69,35 @@ const findUserById = (id) => {
             }
         });
     });
-
 }
 
-module.exports = {createUser, findUserByEmail, findUserById};
+const getPosts = () => {
+    return new Promise((resolve, reject) => {
+        const sql = `SELECT * FROM posts`;
+
+        db.all(sql, [], (err, rows) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(rows);
+            }
+        });
+    });
+}
+
+const createPost = (post) => {
+    return new Promise((resolve, reject) => {
+        const {user_email, content} = post;
+        const sql = `INSERT INTO posts (user_email, content) VALUES (?, ?)`;
+
+        db.run(sql, [user_email, content], function (err) {
+            if (err) {
+                reject(err);
+            } else {
+                resolve({id: this.lastID});
+            }
+        });
+    });
+}
+
+module.exports = {createUser, findUserByEmail, findUserById, createPost, getPosts};
