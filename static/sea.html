@@ -113,14 +113,19 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        let token = localStorage.getItem('token')
-        let email = localStorage.getItem('email')
-        if (token) {
-            console.log('已登录')
-            document.querySelector('#user-email').innerHTML = `<span><b>${email}</b> | <a href="" id="logoutLink" onclick="logout()">退出</a></span>`
-        } else {
-            console.log('未登录')
-        }
+        let userEmail = document.getElementById('user-email')
+
+        fetch('/get-user-info')
+            .then(response => {
+                if(response.status === 200) return response.json()
+                else throw new Error('用户未登录')
+            })
+            .then(data => {
+                userEmail.innerHTML = `<span><b>${data.email}</b> | <a href="" id="logoutLink" onclick="logout()">退出</a></span>`
+            })
+            .catch(error => {
+                console.error('用户未登录:', error)
+            })
     })
     function register() {
         let email = document.getElementById('register-email')
@@ -135,12 +140,12 @@
             body: JSON.stringify({email: email.value, username: username.value, password: password.value})
         })
             .then(response => {
-                if(response.status === 200) return response.json()
+                if(response.status === 200) {
+                    console.log("注册成功")
+                    let registerModal = document.getElementById('registerModal')
+                    registerModal.hidden = true
+                }
                 else throw new Error('注册失败，请检查您的邮箱和密码是否正确。')
-            })
-            .then(data => {
-                let registerModal = document.getElementById('registerModal')
-                registerModal.hidden = true
             })
             .catch(error => {
                 console.error('注册失败:', error)
@@ -159,29 +164,36 @@
             body: JSON.stringify({email: email.value, password: password.value})
         })
             .then(response => {
-                if(response.status === 200) return response.json()
+                console.log(response.status)
+                if(response.status === 200) {
+                    console.log("登录成功")
+                    document.querySelector('#user-email').innerHTML = `<span><b>${email.value}</b> | <a href="" id="logoutLink" onclick="logout()">退出</a></span>`
+                    let loginModal = document.getElementById('loginModal')
+                    loginModal.hidden = true
+                }
                 else throw new Error('登录失败，请检查您的邮箱和密码是否正确。')
             })
-            .then(data => {
-                localStorage.setItem('token', data.token)
-                localStorage.setItem('email', data.email)
-                document.querySelector('#user-email').innerHTML = `<span><b>${email.value}</b> | <a href="" id="logoutLink" onclick="logout()">退出</a></span>`
-                let loginModal = document.getElementById('loginModal')
-                loginModal.hidden = true
-            })
             .catch(error => {
-                console.error('登录失败:', error)
-            })
+                console.error('登录过程中发生错误:', error);
+            });
     }
 
     function logout() {
-        localStorage.removeItem('token')
-        localStorage.removeItem('email')
-        document.querySelector('#user-email').innerHTML = `<b>请<a data-bs-target="#loginModal" data-bs-toggle="modal" href="" id="loginLink">登录</a></b>`
-        let loginModal = document.getElementById('loginModal')
-        document.getElementById('login-email').value = ''
-        document.getElementById('login-password').value = ''
-        loginModal.hidden = false
+        fetch('/logout')
+            .then(response => {
+                if(response.status === 200) {
+                    console.log("退出成功")
+                    document.querySelector('#user-email').innerHTML = `<b>请<a data-bs-target="#loginModal" data-bs-toggle="modal" href="" id="loginLink">登录</a></b>`
+                    let loginModal = document.getElementById('loginModal')
+                    document.getElementById('login-email').value = ''
+                    document.getElementById('login-password').value = ''
+                    loginModal.hidden = false
+                }
+                else throw new Error('退出失败')
+            })
+            .catch(error => {
+                console.error('退出过程中发生错误:', error)
+            })
     }
 
 </script>
