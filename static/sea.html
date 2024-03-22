@@ -133,7 +133,7 @@
         let loginLink = document.getElementById('loginLink')
         let logoutLink = document.getElementById('logoutLink')
 
-        fetch('/get-user-info')
+        fetch('/user/get-user-info')
             .then(response => {
                 if (response.status === 200) return response.json()
                 else throw new Error('用户未登录')
@@ -165,7 +165,7 @@
             return
         }
 
-        fetch('/register', {
+        fetch('/user/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -194,7 +194,7 @@
             return
         }
 
-        fetch('/login', {
+        fetch('/user/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -221,7 +221,7 @@
     }
 
     function logout() {
-        fetch('/logout')
+        fetch('/user/logout')
             .then(response => {
                 if (response.status === 200) {
                     console.log("退出成功")
@@ -243,7 +243,7 @@
     }
 
     function showPosts() {
-        fetch('/get-posts')
+        fetch('/post/get-posts')
             .then(response => {
                 if (response.status === 200) return response.json()
                 else throw new Error('获取留言失败')
@@ -290,7 +290,7 @@
             alert('请填写留言内容')
             return
         }
-        fetch('/submit', {
+        fetch('/post/submit', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

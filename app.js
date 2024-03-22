@@ -11,9 +11,6 @@ app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`)
 })
 
-const bcrypt = require('bcrypt')
-const db = require('./db')
-
 app.use(express.static('./static'))
 app.use(cookieSession({
     name: 'session',
@@ -21,59 +18,11 @@ app.use(cookieSession({
     maxAge: 24 * 60 * 60 * 1000 // 24 hours
 }))
 
-app.get('/get-user-info', (req, res) => {
-    if (req.session.email) {
-        res.status(200).send({email: req.session.email, username: req.session.username})
-    } else {
-        res.status(401).json({ message: "用户未登录" });
-    }
-})
+const user = require('./routes/user')
+app.use("/user", user)
 
-app.post('/register', async (req, res) => {
-    const {email, username, password} = req.body
-    const hashedPassword = await bcrypt.hash(password, 10)
-
-    const result = await db.createUser({email, username, password: hashedPassword})
-    res.status(200).send(result)
-    console.log("注册成功")
-})
-
-app.post('/login', async (req, res) => {
-    const {email, password} = req.body
-    const user = await db.findUserByEmail(email)
-
-    if (user && await bcrypt.compare(password, user.password)) {
-        req.session.email = user.email
-        req.session.username = user.username
-        console.log(`${user.username}登录成功`)
-        res.status(200).send({message: `${user.username}登录成功`})
-    } else {
-        res.status(401).send({error: "Email or password is incorrect"})
-    }
-})
-
-app.get('/logout', (req, res) => {
-    req.session = null;
-    res.send({ message: '已成功注销' });
-});
-
-// 留言板帖子的CRUD路由
-
-app.get('/get-posts', async (req, res) => {
-    const posts = await db.getPosts()
-    res.status(200).send(posts)
-})
-
-app.post('/submit', async (req, res) => {
-    const {email, message} = req.body;
-    try {
-        const result = await db.createPost({user_email: email, content: message});
-        res.status(200).send(result);
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Error creating post');
-    }
-})
+const post = require('./routes/post')
+app.use("/post", post)
 
 app.use((req, res) => {
     res.status(404).send("Sorry can't find that!")
