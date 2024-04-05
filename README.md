@@ -1,29 +1,16 @@
-# hjl_site
+# 以贺峻霖为主题的网站
 
-This template should help get you started developing with Vue 3 in Vite.
+## 示意图
 
-## Recommended IDE Setup
+基于 Bootstrap 容器，实现网页自适应。
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+![image](https://github.com/MengWorld/HJL-Site/assets/95157017/9d69cf8d-7979-436c-8aab-e42cd020245c)
 
-## Customize configuration
+![image](https://github.com/MengWorld/HJL-Site/assets/95157017/8216d3a9-c201-426d-bc2b-bdd015b67e13)
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+## 技术栈
 
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Compile and Minify for Production
-
-```sh
-npm run build
-```
+- 前端界面框架: Bootstrap
+- Web 前端框架: Vue3.js
+- 后端: Express.js
+- 数据库: SQLite3
