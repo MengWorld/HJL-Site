@@ -5,6 +5,8 @@ import VarShow from "./components/VarShow.vue";
 import Daily from "./components/Daily.vue";
 import MesBoard from "./components/MesBoard.vue";
 import NotFound from "./components/NotFound.vue";
+import Login from "@/components/Login.vue";
+import Register from "@/components/Register.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -14,6 +16,8 @@ const router = createRouter({
         { path: "/var-show", component: VarShow },
         { path: "/daily", component: Daily },
         { path: "/mes-board", component: MesBoard },
+        { path: "/login", component: Login },
+        { path: "/register", component: Register },
         { path: '/:pathMatch(.*)', component: NotFound },
     ],
 });
