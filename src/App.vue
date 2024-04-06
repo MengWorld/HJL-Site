@@ -1,7 +1,10 @@
 <script setup>
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
-
+import {onMounted} from "vue";
+onMounted(() => {
+  document.title = "贺峻霖";
+})
 </script>
 
 <template>

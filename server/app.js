@@ -1,25 +1,23 @@
-const express = require('express')
+const express = require('express');
+const bodyParser = require('body-parser');
+const apiRouter = require('./api');
 const cookieSession = require('cookie-session')
 const cors = require('cors')
-const app = express()
-const PORT = 3000
+require('./db/dbInit')
 
-app.use(express.json())
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+app.use(bodyParser.json());
 app.use(cors())
 
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
 app.use(cookieSession({
     name: 'session',
     keys: ['key1', 'key2'],
-    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+    maxAge: 24 * 60 * 60 * 1000
 }))
 
-const apiRoutes = require('./routes/api')
-app.use("/api", apiRoutes)
-
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`)
-})
-
-app.use((req, res) => {
-    res.status(404).send("Sorry can't find that!")
-})
+app.use('/api', apiRouter);

@@ -1,5 +1,36 @@
 <script setup>
+import {ref} from "vue";
+import axios from "axios";
+import router from "@/router";
 
+let login_email = ref('');
+let login_password = ref('');
+
+function login() {
+  if (login_email.value.length === 0) {
+    alert("邮箱不能为空");
+    return;
+  }
+  if (login_password.value.length < 6) {
+    alert("密码长度不能小于6位");
+    return;
+  }
+  axios.post('/api/user/login', {
+    email: login_email.value,
+    password: login_password.value
+  })
+      .then(response => {
+        if (response.status === 200) {
+          alert("登录成功");
+          router.push("/");
+        } else {
+          alert("登录失败");
+        }
+      })
+      .catch(error => {
+        console.error("登录过程中发生错误: ", error);
+      });
+}
 </script>
 
 <template>
@@ -7,16 +38,16 @@
     <form id="loginForm">
       <div class="form-floating mb-3">
         <input class="form-control" id="login-email" placeholder="name@example.com"
-               type="email">
+               type="email" v-model="login_email">
         <label for="login-email">邮箱</label>
       </div>
       <div class="form-floating">
         <input class="form-control" id="login-password" placeholder="Password"
-               type="password">
+               type="password" v-model="login_password">
         <label for="login-password">密码</label>
       </div>
     </form>
-    <div><button class="btn btn-success" id="login-button" onclick="login()" type="button">登录</button></div>
+    <div><button class="btn btn-success" id="login-button" @click="login()" type="button">登录</button></div>
     <div class="tip-for-register">
       <label class="my-3" style="text-align: center">
         <span>还没有账号？</span>
