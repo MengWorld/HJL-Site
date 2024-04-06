@@ -105,7 +105,7 @@ onUpdated(() => {
       <textarea class="form-control" id="contentTextarea" rows="3" placeholder="正文" v-model="content"></textarea>
     </div>
     <div class="d-grid gap-2 d-md-flex justify-content-md-end my-2">
-      <button class="btn btn-outline-success" @click="createPost()" type="button">提交</button>
+      <button class="btn btn-primary" @click="createPost()" type="button">提交</button>
     </div>
     <hr>
     <div class="my-4">

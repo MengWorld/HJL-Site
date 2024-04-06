@@ -31,7 +31,7 @@ onMounted(() => {
 
 <style scoped>
 #app {
-  font-family: 思源宋体;
+  //font-family: 思源宋体;
   display: flex;
   min-height: 100vh;
   flex-direction: column;

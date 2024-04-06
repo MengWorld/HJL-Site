@@ -1,0 +1,26 @@
+@import "../../node_modules/bootstrap/scss/bootstrap";
+
+$primary: #7fb671;
+
+// 定制按钮颜色
+.btn-primary {
+  background-color: $primary;
+  border-color: darken($primary, 10%);
+
+  color: #fff !important;
+
+  &:hover, &:focus {
+    background-color: darken($primary, 10%);
+    color: #fff !important;
+  }
+}
+
+.btn-outline-primary {
+  color: $primary;
+  border-color: $primary;
+
+  &:hover, &:focus {
+    background-color: $primary;
+    color: #fff !important;
+  }
+}

@@ -63,7 +63,7 @@ onUnmounted(() => {
             </ul>
             <form class="d-flex" role="search">
               <input aria-label="Search" class="form-control me-2" placeholder="Search" type="search">
-              <button class="btn btn-outline-success" type="submit">Search</button>
+              <button class="btn btn-primary" type="submit">Search</button>
             </form>
             <User v-if="!ariaExpanded"/>
           </div>

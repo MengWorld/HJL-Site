@@ -7,14 +7,6 @@ let login_email = ref('');
 let login_password = ref('');
 
 function login() {
-  if (login_email.value.length === 0) {
-    alert("邮箱不能为空");
-    return;
-  }
-  if (login_password.value.length < 6) {
-    alert("密码长度不能小于6位");
-    return;
-  }
   axios.post('/api/user/login', {
     email: login_email.value,
     password: login_password.value
@@ -35,19 +27,19 @@ function login() {
 
 <template>
   <div class="container my-5" id="loginFormContainer">
-    <form id="loginForm">
+    <form id="loginForm" @submit.prevent="login">
       <div class="form-floating mb-3">
         <input class="form-control" id="login-email" placeholder="name@example.com"
-               type="email" v-model="login_email">
+               type="email" required v-model="login_email">
         <label for="login-email">邮箱</label>
       </div>
       <div class="form-floating">
         <input class="form-control" id="login-password" placeholder="Password"
-               type="password" v-model="login_password">
+               type="password" required v-model="login_password">
         <label for="login-password">密码</label>
       </div>
+      <button class="btn btn-primary" id="login-button" type="submit">登录</button>
     </form>
-    <div><button class="btn btn-success" id="login-button" @click="login()" type="button">登录</button></div>
     <div class="tip-for-register">
       <label class="my-3" style="text-align: center">
         <span>还没有账号？</span>
