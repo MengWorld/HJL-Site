@@ -16,10 +16,10 @@ const getPosts = () => {
 
 const createPost = (post) => {
     return new Promise((resolve, reject) => {
-        const {user_email, title,  content} = post;
-        const sql = `INSERT INTO posts (user_email, title, content) VALUES (?, ?)`;
+        const {userId, title, content} = post;
+        const sql = `INSERT INTO posts (userId, title, content) VALUES (?, ?, ?)`;
 
-        db.run(sql, [user_email, title, content], function(err) {
+        db.run(sql, [userId, title, content], function(err) {
             if (err) {
                 reject(err);
             } else {
@@ -29,4 +29,4 @@ const createPost = (post) => {
     });
 };
 
-module.exports = {createPost, getPosts};
+module.exports = {getPosts, createPost};

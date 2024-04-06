@@ -1,5 +1,5 @@
 const express = require('express');
-const { getPosts, addPost } = require('../db/post');
+const { getPosts, createPost } = require('../db/post');
 
 const router = express.Router();
 
@@ -14,10 +14,11 @@ router.get('/get-posts', async (req, res) => {
 
 router.post('/create-post', async (req, res) => {
     try {
-        const { title, content, userId } = req.body;
-        const newPost = await addPost(title, content, userId);
+        const { userId, title, content } = req.body;
+        const newPost = await createPost({userId, title, content});
         res.status(200).json(newPost);
     } catch (error) {
+        console.log(error.message)
         res.status(500).send(error.toString());
     }
 });

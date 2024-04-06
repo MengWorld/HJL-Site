@@ -6,8 +6,8 @@ const {createUser, findUserByEmail} = require('../db/user');
 const router = express.Router();
 
 router.get('/check-login-status', (req, res) => {
-    if (req.session.email) {
-        res.status(200).send({email: req.session.email, username: req.session.username})
+    if (req.session.userId) {
+        res.status(200).send({userId: req.session.userId, email: req.session.email, username: req.session.username})
         console.log(`${req.session.username}已登录`)
     } else {
         res.status(401).json({ message: "用户未登录" });
@@ -34,6 +34,7 @@ router.post('/login', async (req, res) => {
     const user = await findUserByEmail(email)
 
     if (user && await bcrypt.compare(password, user.password)) {
+        req.session.userId = user.id
         req.session.email = user.email
         req.session.username = user.username
         console.log(`${user.username}登录成功`)

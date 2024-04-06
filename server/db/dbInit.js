@@ -25,11 +25,11 @@ const initDb = () => {
 
     db.run(`CREATE TABLE IF NOT EXISTS posts (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        user_email TEXT NOT NULL,
+        userId TEXT NOT NULL,
         title TEXT NOT NULL,
         content TEXT NOT NULL,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (user_email) REFERENCES users(email)
+        FOREIGN KEY (userId) REFERENCES users(id)
     )`, (err) => {
         if (err) {
             console.error(err.message);
