@@ -32,7 +32,7 @@ onUnmounted(() => {
       <nav class="navbar navbar-expand-lg custom-navbar-bg">
           <router-link class="navbar-brand" to="/">
             <img alt="Logo" class="d-inline-block align-text-top" height="30"
-                 src="../assets/img/logo.JPG"
+                 src="../assets/img/logo.jpg"
                  width="30">
             &nbsp;
             <span style="color: #569645;">贺峻霖</span>
