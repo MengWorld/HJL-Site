@@ -83,10 +83,6 @@ onMounted(() => {
   getPosts();
 });
 
-onUpdated(() => {
-  getPosts();
-});
-
 </script>
 
 <template>

@@ -41,10 +41,6 @@ function logout() {
 onMounted(() => {
   checkLoginStatus();
 });
-
-onUpdated(() => {
-  checkLoginStatus();
-});
 </script>
 
 <template>
