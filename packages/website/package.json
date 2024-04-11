@@ -10,13 +10,7 @@
   "dependencies": {
     "@popperjs/core": "^2.11.8",
     "axios": "^1.6.8",
-    "bcrypt": "^5.1.1",
-    "body-parser": "^1.20.2",
     "bootstrap": "^5.3.3",
-    "cookie-session": "^2.1.0",
-    "cors": "^2.8.5",
-    "express": "^4.19.2",
-    "sqlite3": "^5.1.7",
     "vue": "^3.4.21",
     "vue-router": "^4.3.0",
     "vuex": "^4.0.2"
